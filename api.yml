@@ -46,13 +46,16 @@ paths:
               $ref: "#/components/schemas/LoginForm"
         required: true
       responses:
-        405:
-          description: Invalid input
+        302:
+          description: Successful authentication
+          headers:
+              Set-Cookie:
+                schema:
+                  type: string
+                  example: irsso_membersv2=A04B9E7745D3696F456622F0FB739F99FAD48677EFCCBD8027F475D0373CB9C0F695F9B0B6A87F309162CF56B9ACE2051EE17CA0E102603AC405A145127542D4A02CBB2FD05AB156850C44ECC967EE4746643AFB454EDAFDD3152E33FED24747407C47BC6DFE3902CB28B304A2D38F1A80935C8A397D50BD228407B8C10111C3; Domain=iracing.com; Path=/; HttpOnly
           content: {}
       security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
+      - cookieAuth: []
       x-codegen-request-body-name: body
   /pet/findByStatus:
     get:
@@ -690,15 +693,7 @@ components:
         message:
           type: string
   securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: http://petstore.swagger.io/oauth/dialog
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
+    cookieAuth:
       type: apiKey
-      name: api_key
-      in: header
+      in: cookie
+      name: irsso_membersv2
